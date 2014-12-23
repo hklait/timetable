@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+
+<h:body>
+	<h:form id="managePedagogicAssistantsForm">
+		<p:outputPanel>
+			<h1>
+				<h:outputText value="Verwaltung der pädagogischen Mitarbeiterinnen" />
+			</h1>
+			<h:outputText
+				value="In dieser Ansicht wird pädagogisches Personal verwaltet." />
+		</p:outputPanel>
+
+		<p:spacer style="height:50px;" />
+
+		<p:outputPanel style="float:right">
+			<p:commandButton value="Hinzufügen" icon="ui-icon-plusthick"
+				actionListener="#{pedagogicAssistantController.openDialogAddPA}">
+				<p:ajax event="dialogReturn" update="@form" />
+			</p:commandButton>
+		</p:outputPanel>
+
+		<!-- Existierende pädagogische Mitarbeiterinnen -->
+		<p:contextMenu for="pedagogicAssistantTable">
+			<p:menuitem value="Bearbeiten"
+				actionListener="#{pedagogicAssistantController.openDialogEditPA}"
+				icon="ui-icon-pencil" />
+			<p:menuitem value="Löschen" update="@form" icon="ui-icon-close"
+				actionListener="#{pedagogicAssistantController.deletePA}" />
+		</p:contextMenu>
+		<p:dataTable emptyMessage="Keine pädagogische Mitarbeiterinnen vorhanden" id="pedagogicAssistantTable" var="pedagogicAssistant"
+			value="#{pedagogicAssistantController.getPedagogicAssistants()}"
+			selection="#{pedagogicAssistantController.pedagogicAssistant}"
+			selectionMode="single" rowKey="#{pedagogicAssistant.symbol}">
+			<p:column headerText="Name">
+				<h:outputText value="#{pedagogicAssistant.name}" />
+			</p:column>
+			<p:column headerText="Kürzel">
+				<h:outputText value="#{pedagogicAssistant.symbol}" />
+			</p:column>
+			<p:column headerText="Wochenstunden">
+				<h:outputText value="#{pedagogicAssistant.hoursPerWeek}" />
+			</p:column>
+		</p:dataTable>
+		
+		<p:poll interval="3" update="pedagogicAssistantTable" />
+	</h:form>
+</h:body>
+</html>
